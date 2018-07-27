@@ -13,6 +13,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "provision/secure_ssh_key.sh"
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
   config.vm.provision "shell", path: "provision/set_timezone.sh"
-  config.vm.provision "shell", path: "provision/configure_git.sh", args: [config_file["git"]["name"], config_file["git"]["email"]]
+  config.vm.provision "shell", path: "provision/configure_git.sh", args: config_file["git"].values_at("name", "email")
   config.vm.provision "shell", path: "provision/set_login_directory.sh"
 end
