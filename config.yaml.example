@@ -1,4 +1,5 @@
 workspace_path: C:\path\to\share\directory
+bash_aliases_path: C:\path\to\.bash_aliases
 git:
   email: local-part@domain.tld
   name: First Last
