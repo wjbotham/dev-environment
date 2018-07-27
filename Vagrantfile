@@ -1,7 +1,17 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+unless File.exists?('config.yaml')
+  puts "Couldn't find `config.yaml`, which is required to run this script. See `config.yaml.example` for its structure."
+  exit
+end
+
 config_file = YAML.load_file('config.yaml')
+
+unless config_file["git"]
+  puts "No git configuration provided. See `config.yaml.example`."
+  exit
+end
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
