@@ -1,1 +1,5 @@
 workspace_path: C:\path\to\share\directory
+git:
+  email: local-part@domain.tld
+  name: First Last
+  key: C:\path\to\id_rsa
