@@ -5,5 +5,5 @@ su - vagrant -c "git config --global user.name '$1'"
 su - vagrant -c "git config --global user.email '$2'"
 su - vagrant -c "git config --global push.default current"
 su - vagrant -c "git config --global core.editor 'vim'"
-echo "*.swp" > /home/vagrant/.gitignore_global
+cp /vagrant/.gitignore_global /home/vagrant/.gitignore_global
 su - vagrant -c "git config --global core.excludesfile /home/vagrant/.gitignore_global"
