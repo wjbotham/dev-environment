@@ -1,2 +1,2 @@
-sourch .bashrc
+source .bashrc
 cd /home/vagrant/workspace

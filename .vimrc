@@ -5,7 +5,7 @@ autocmd BufRead,BufWrite * if ! &bin | silent! %s/\s\+$//ge | endif
 
 " searching
 set ignorecase    " search cast-insensitive
-set smartcase     " ...unlesss there's a capital letter, then make it case sensitive
+set smartcase     " ...unless there's a capital letter, then make it case sensitive
 set incsearch     " search as you type
 set hlsearch      " highlight search items
 
