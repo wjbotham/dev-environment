@@ -30,29 +30,9 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "file", source: config_file["git"]["key"], destination: "/home/vagrant/.ssh/id_rsa"
 
-  config.vm.provision "shell", args: [config_file["git"]["name"], config_file["git"]["email"]], inline: <<-SHELL
-    echo "Setting secure permissions on git private key"
-    chmod u=rw,go= /home/vagrant/.ssh/id_rsa
-
-    echo "Installing dependencies"
-    apt-get update
-    apt-get install -y git vim
-
-    echo "Setting timezone to US Central"
-    ln -fs /usr/share/zoneinfo/US/Central /etc/localtime
-
-    echo "Configuring git"
-    su - vagrant -c "git config --global user.name '$1'"
-    su - vagrant -c "git config --global user.email '$2'"
-    su - vagrant -c "git config --global push.default current"
-    echo "*.swp" > /home/vagrant/.gitignore_global
-    su - vagrant -c "git config --global core.excludesfile /home/vagrant/.gitignore_global"
-
-    echo "Changing login directory to /home/vagrant/workspace"
-    touch /home/vagrant/.bash_profile
-    if ! grep "cd /home/vagrant/workspace" /home/vagrant/.bash_profile
-    then
-      echo "cd /home/vagrant/workspace" >> /home/vagrant/.bash_profile
-    fi
-  SHELL
+  config.vm.provision "shell", path: "provision/secure_ssh_key.sh"
+  config.vm.provision "shell", path: "provision/install_dependencies.sh"
+  config.vm.provision "shell", path: "provision/set_timezone.sh"
+  config.vm.provision "shell", path: "provision/configure_git.sh", args: [config_file["git"]["name"], config_file["git"]["email"]]
+  config.vm.provision "shell", path: "provision/set_login_directory.sh"
 end
