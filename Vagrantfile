@@ -24,9 +24,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "shell", path: "provision/secure_ssh_key.sh"
+  config.vm.provision "shell", path: "provision/link_config_files.sh"
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
   config.vm.provision "shell", path: "provision/set_timezone.sh"
   config.vm.provision "shell", path: "provision/configure_git.sh", args: config_file["git"].values_at("name", "email")
-  config.vm.provision "shell", inline: "cp /vagrant/files/.bash_profile /home/vagrant/.bash_profile"
-  config.vm.provision "shell", inline: "cp /vagrant/files/.vimrc /home/vagrant/.vimrc"
 end
