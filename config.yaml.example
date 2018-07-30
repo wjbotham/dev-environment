@@ -1,6 +1,10 @@
 workspace_path: C:\path\to\share\directory
 bash_aliases_path: C:\path\to\.bash_aliases
+ssh:
+  keys:
+    private: C:\path\to\id_rsa
+    public: C:\path\to\id_rsa.pub
+  config: C:\path\to\config
 git:
   email: local-part@domain.tld
   name: First Last
-  key: C:\path\to\id_rsa

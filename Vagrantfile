@@ -18,13 +18,16 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder config_file["workspace_path"], "/home/vagrant/workspace"
 
-  config.vm.provision "file", source: config_file["git"]["key"], destination: "/home/vagrant/.ssh/id_rsa"
-
+  config.vm.provision "file", source: config_file["ssh"]["keys"]["private"], destination: "/home/vagrant/.ssh/id_rsa"
+  config.vm.provision "file", source: config_file["ssh"]["keys"]["public"], destination: "/home/vagrant/.ssh/id_rsa.pub"
   if config_file["bash_aliases_path"]
     config.vm.provision "file", source: config_file["bash_aliases_path"], destination: "/home/vagrant/.bash_aliases"
   end
+  if config_file["ssh"]["config"]
+    config.vm.provision "file", source: config_file["ssh"]["config"], destination: "/home/vagrant/.ssh/config"
+  end
 
-  config.vm.provision "shell", path: "provision/secure_ssh_key.sh"
+  config.vm.provision "shell", path: "provision/secure_ssh_keys.sh"
   config.vm.provision "shell", path: "provision/link_config_files.sh"
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
   config.vm.provision "shell", path: "provision/set_timezone.sh"
