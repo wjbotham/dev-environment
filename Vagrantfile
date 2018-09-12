@@ -18,8 +18,26 @@ Vagrant.configure("2") do |config|
 
   config.vm.synced_folder config_file["workspace_path"], "/home/vagrant/workspace"
 
-  config.vm.provision "file", source: config_file["ssh"]["keys"]["private"], destination: "/home/vagrant/.ssh/id_rsa"
-  config.vm.provision "file", source: config_file["ssh"]["keys"]["public"], destination: "/home/vagrant/.ssh/id_rsa.pub"
+  config_file["ssh"]["keys"].tap do |keys_config|
+    ["private","public","pem"].each do |type|
+      keys_config[type].each do |filename|
+        source_path = "#{keys_config["directory"]}\\#{filename}"
+        local_path = "/home/vagrant/.ssh/#{filename}"
+        config.vm.provision "file", source: source_path, destination: local_path
+
+        chmod_flags = case type
+                      when "private"
+                        "u=rw,go="
+                      when "public"
+                        "u=rw,go=r"
+                      when "pem"
+                        "u=r,go="
+                      end
+        config.vm.provision "shell", path: "provision/secure_ssh_key.sh", args: [chmod_flags, local_path]
+      end
+    end
+  end
+
   if config_file["bash_aliases_path"]
     config.vm.provision "file", source: config_file["bash_aliases_path"], destination: "/home/vagrant/.bash_aliases"
   end
@@ -27,9 +45,9 @@ Vagrant.configure("2") do |config|
     config.vm.provision "file", source: config_file["ssh"]["config"], destination: "/home/vagrant/.ssh/config"
   end
 
-  config.vm.provision "shell", path: "provision/secure_ssh_keys.sh"
   config.vm.provision "shell", path: "provision/link_config_files.sh"
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
   config.vm.provision "shell", path: "provision/set_timezone.sh"
   config.vm.provision "shell", path: "provision/configure_git.sh", args: config_file["git"].values_at("name", "email")
+  config.vm.provision "shell", path: "provision/set_up_ssh_agent.sh"
 end
