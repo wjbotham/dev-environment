@@ -10,6 +10,9 @@ ssh:
     pem:
     - name.pem
   config: C:\path\to\config
+aws:
+  credentials: C:\path\to\credentials
+  config: C:\path\to\config
 git:
   email: local-part@domain.tld
   name: First Last

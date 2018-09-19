@@ -46,6 +46,12 @@ Vagrant.configure("2") do |config|
   if config_file["ssh"]["config"]
     config.vm.provision "file", source: config_file["ssh"]["config"], destination: "/home/vagrant/.ssh/config"
   end
+  if config_file["aws"]["credentials"]
+    config.vm.provision "file", source: config_file["aws"]["credentials"], destination: "/home/vagrant/.aws/credentials"
+  end
+  if config_file["aws"]["config"]
+    config.vm.provision "file", source: config_file["aws"]["credentials"], destination: "/home/vagrant/.aws/config"
+  end
 
   config.vm.provision "shell", path: "provision/link_config_files.sh"
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
