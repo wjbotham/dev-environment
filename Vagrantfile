@@ -20,20 +20,22 @@ Vagrant.configure("2") do |config|
 
   config_file["ssh"]["keys"].tap do |keys_config|
     ["private","public","pem"].each do |type|
-      keys_config[type].each do |filename|
-        source_path = "#{keys_config["directory"]}\\#{filename}"
-        local_path = "/home/vagrant/.ssh/#{filename}"
-        config.vm.provision "file", source: source_path, destination: local_path
+      if keys_config[type]
+        keys_config[type].each do |filename|
+          source_path = "#{keys_config["directory"]}\\#{filename}"
+          local_path = "/home/vagrant/.ssh/#{filename}"
+          config.vm.provision "file", source: source_path, destination: local_path
 
-        chmod_flags = case type
-                      when "private"
-                        "u=rw,go="
-                      when "public"
-                        "u=rw,go=r"
-                      when "pem"
-                        "u=r,go="
-                      end
-        config.vm.provision "shell", path: "provision/secure_ssh_key.sh", args: [chmod_flags, local_path]
+          chmod_flags = case type
+                        when "private"
+                          "u=rw,go="
+                        when "public"
+                          "u=rw,go=r"
+                        when "pem"
+                          "u=r,go="
+                        end
+          config.vm.provision "shell", path: "provision/secure_ssh_key.sh", args: [chmod_flags, local_path]
+        end
       end
     end
   end
