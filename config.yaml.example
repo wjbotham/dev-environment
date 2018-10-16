@@ -16,3 +16,4 @@ aws:
 git:
   email: local-part@domain.tld
   name: First Last
+firewall_cert_path: C:\path\to\file.crt

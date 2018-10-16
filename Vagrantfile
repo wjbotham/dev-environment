@@ -52,8 +52,10 @@ Vagrant.configure("2") do |config|
   if config_file["aws"]["config"]
     config.vm.provision "file", source: config_file["aws"]["credentials"], destination: "/home/vagrant/.aws/config"
   end
-
   config.vm.provision "shell", path: "provision/link_config_files.sh"
+  if config_file["firewall_cert_path"]
+    config.vm.provision "shell", path: "provision/append_cert.sh", args: config_file["firewall_cert_path"]
+  end
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
   config.vm.provision "shell", path: "provision/set_timezone.sh"
   config.vm.provision "shell", path: "provision/configure_git.sh", args: config_file["git"].values_at("name", "email")
