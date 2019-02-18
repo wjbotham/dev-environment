@@ -54,7 +54,10 @@ Vagrant.configure("2") do |config|
   end
   config.vm.provision "shell", path: "provision/link_config_files.sh"
   if config_file["firewall_cert_path"]
-    config.vm.provision "shell", path: "provision/append_cert.sh", args: config_file["firewall_cert_path"]
+    source_path = config_file["firewall_cert_path"]
+    local_path = "/home/vagrant/FirewallCert.crt"
+    config.vm.provision "file", source: source_path, destination: local_path
+    config.vm.provision "shell", path: "provision/append_cert.sh", args: local_path
   end
   config.vm.provision "shell", path: "provision/install_dependencies.sh"
   config.vm.provision "shell", path: "provision/set_timezone.sh"
