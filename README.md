@@ -8,7 +8,7 @@ C:\cygwin64\bin\mintty.exe -i /Cygwin-Terminal.ico /bin/bash -l -c "cd /cygdrive
 ```
 Or a `OpenDevEnvironment.ps1` with the following contents:
 ```
-Set-Location -Path C:\Users\wbotham\Workspace\dev-environment
+Set-Location -Path C:\PATH\TO\dev-environment
 If (-Not ((vagrant status) -match "running")) {
   vagrant up
 }
